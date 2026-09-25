@@ -45,7 +45,7 @@ function AzureBank() {
           React.createElement(
             "p",
             { className: "subtitle" },
-            "A modern digital banking experience powered by Microsoft Azure."
+            "A modern digital banking experience powered by Microsoft."
           ),
           React.createElement(
             "button",
