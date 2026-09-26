@@ -1,18 +1,15 @@
-const API_BASE_URL = process.env.API_BASE_URL || "";
+const LOGIC_APP_URL = process.env.LOGIC_APP_URL;
 
 async function depositMoney(transaction) {
-  const response = await fetch(
-    `${API_BASE_URL}/api/deposit`,
-    {
-      method: "POST",
+  const response = await fetch(LOGIC_APP_URL, {
+    method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+    headers: {
+      "Content-Type": "application/json"
+    },
 
-      body: JSON.stringify(transaction)
-    }
-  );
+    body: JSON.stringify(transaction)
+  });
 
   if (!response.ok) {
     throw new Error("Deposit request failed");

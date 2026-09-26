@@ -1,9 +1,10 @@
 const React = require("react");
+const { depositMoney } = require("../services/api");
 
 function Deposit() {
   const [amount, setAmount] = React.useState("");
 
-  function handleDeposit() {
+  async function handleDeposit() {
     if (!amount || Number(amount) <= 0) {
       alert("Please enter a valid deposit amount.");
       return;
@@ -17,11 +18,17 @@ function Deposit() {
       currency: "INR"
     };
 
-    console.log("Deposit transaction:", transaction);
+    try {
+      const result = await depositMoney(transaction);
 
-    alert(
-      `Deposit request created for ₹${transaction.amount}`
-    );
+      console.log("Deposit response:", result);
+
+      alert("Deposit request submitted successfully.");
+    } catch (error) {
+      console.error("Deposit error:", error);
+
+      alert("Deposit request failed.");
+    }
   }
 
   return React.createElement(
