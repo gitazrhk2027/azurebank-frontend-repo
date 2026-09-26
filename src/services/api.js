@@ -1,7 +1,5 @@
-const LOGIC_APP_URL = process.env.LOGIC_APP_URL;
-
 async function depositMoney(transaction) {
-  const response = await fetch(LOGIC_APP_URL, {
+  const response = await fetch("/api/deposit", {
     method: "POST",
 
     headers: {
