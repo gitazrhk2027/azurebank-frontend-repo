@@ -1,36 +1,6 @@
 const React = require("react");
-const { depositMoney } = require("../services/api");
 
 function Deposit() {
-  const [amount, setAmount] = React.useState("");
-
-  async function handleDeposit() {
-    if (!amount || Number(amount) <= 0) {
-      alert("Please enter a valid deposit amount.");
-      return;
-    }
-
-    const transaction = {
-      transactionId: "TXN-" + Date.now(),
-      accountNumber: "10001",
-      transactionType: "DEPOSIT",
-      amount: Number(amount),
-      currency: "INR"
-    };
-
-    try {
-      const result = await depositMoney(transaction);
-
-      console.log("Deposit response:", result);
-
-      alert("Deposit request submitted successfully.");
-    } catch (error) {
-      console.error("Deposit error:", error);
-
-      alert("Deposit request failed.");
-    }
-  }
-
   return React.createElement(
     "div",
     { className: "card" },
@@ -56,20 +26,71 @@ function Deposit() {
     React.createElement(
       "input",
       {
+        id: "depositAmount",
         type: "number",
         placeholder: "Enter amount in INR",
-        min: "1",
-        value: amount,
-        onChange: (event) => setAmount(event.target.value)
+        min: "1"
       }
     ),
 
     React.createElement(
       "button",
       {
-        onClick: handleDeposit
+        type: "button",
+        id: "depositButton"
       },
       "Deposit Money"
+    ),
+
+    React.createElement(
+      "script",
+      {
+        dangerouslySetInnerHTML: {
+          __html: `
+            document.getElementById("depositButton").addEventListener("click", async function () {
+
+              const amount = document.getElementById("depositAmount").value;
+
+              if (!amount || Number(amount) <= 0) {
+                alert("Please enter a valid deposit amount.");
+                return;
+              }
+
+              const transaction = {
+                transactionId: "TXN-" + Date.now(),
+                accountNumber: "10001",
+                transactionType: "DEPOSIT",
+                amount: Number(amount),
+                currency: "INR"
+              };
+
+              try {
+
+                const response = await fetch("/api/deposit", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(transaction)
+                });
+
+                if (!response.ok) {
+                  throw new Error("Deposit request failed");
+                }
+
+                alert("Deposit request submitted successfully.");
+
+              } catch (error) {
+
+                console.error("Deposit error:", error);
+                alert("Deposit request failed.");
+
+              }
+
+            });
+          `
+        }
+      }
     )
   );
 }
