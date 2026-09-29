@@ -2,8 +2,26 @@
 const React = require("react");
 
 function Balance() {
-  const handleClick = () => {
-    alert("Balance button clicked");
+  const checkBalance = async () => {
+    try {
+      const response = await fetch("/api/balance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          accountNumber: "10001"
+        })
+      });
+
+      const data = await response.text();
+
+      alert("Response: " + data);
+
+    } catch (error) {
+      console.error(error);
+      alert("Error: " + error.message);
+    }
   };
 
   return React.createElement(
@@ -31,7 +49,8 @@ function Balance() {
     React.createElement(
       "button",
       {
-        onClick: handleClick
+        type: "button",
+        onClick: checkBalance
       },
       "Check Balance"
     )
