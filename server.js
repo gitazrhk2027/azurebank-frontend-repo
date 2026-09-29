@@ -16,13 +16,15 @@ app.use(express.urlencoded({ extended: true }));
 // ===============================
 app.post("/api/deposit", async (req, res) => {
   try {
-    const logicAppUrl = process.env.LOGIC_APP_URL;
+    const logicAppUrl = process.env.DEPOSIT_LOGIC_APP_URL;
 
     if (!logicAppUrl) {
       return res.status(500).json({
-        error: "LOGIC_APP_URL is not configured"
+        error: "DEPOSIT_LOGIC_APP_URL is not configured"
       });
     }
+
+    console.log("Calling Deposit Logic App");
 
     const response = await fetch(logicAppUrl, {
       method: "POST",
@@ -34,6 +36,12 @@ app.post("/api/deposit", async (req, res) => {
 
     const responseText = await response.text();
 
+    console.log(
+      "Logic App response:",
+      response.status,
+      responseText
+    );
+
     if (!response.ok) {
       return res.status(response.status).send(responseText);
     }
@@ -44,11 +52,10 @@ app.post("/api/deposit", async (req, res) => {
     console.error("Deposit API error:", error);
 
     res.status(500).json({
-      error: "Deposit request failed"
+      error: error.message
     });
   }
 });
-
 
 // ===============================
 // Balance API
@@ -63,6 +70,8 @@ app.post("/api/balance", async (req, res) => {
       });
     }
 
+    console.log("Calling Balance Logic App");
+
     const response = await fetch(logicAppUrl, {
       method: "POST",
       headers: {
@@ -72,6 +81,12 @@ app.post("/api/balance", async (req, res) => {
     });
 
     const responseText = await response.text();
+
+    console.log(
+      "Balance Logic App response:",
+      response.status,
+      responseText
+    );
 
     if (!response.ok) {
       return res.status(response.status).send(responseText);
@@ -83,11 +98,10 @@ app.post("/api/balance", async (req, res) => {
     console.error("Balance API error:", error);
 
     res.status(500).json({
-      error: "Balance request failed"
+      error: error.message
     });
   }
 });
-
 
 // ===============================
 // Frontend
@@ -102,11 +116,12 @@ app.get("/", (req, res) => {
   res.send(html);
 });
 
-
 // ===============================
 // Start Server
 // ===============================
 app.listen(port, () => {
-  console.log(`Azure Bank frontend listening on port ${port}`);
+  console.log(
+    `Azure Bank frontend listening on port ${port}`
+  );
 });
 
