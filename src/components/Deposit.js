@@ -1,3 +1,4 @@
+
 const React = require("react");
 
 function Deposit() {
@@ -47,7 +48,9 @@ function Deposit() {
       {
         dangerouslySetInnerHTML: {
           __html: `
-            document.getElementById("depositButton").addEventListener("click", async function () {
+            document.getElementById("depositButton").addEventListener("click", async function (event) {
+
+              event.preventDefault();
 
               const amount = document.getElementById("depositAmount").value;
 
@@ -74,16 +77,26 @@ function Deposit() {
                   body: JSON.stringify(transaction)
                 });
 
+                const responseText = await response.text();
+
                 if (!response.ok) {
-                  throw new Error("Deposit request failed");
+                  throw new Error(
+                    "Deposit request failed: HTTP " + response.status
+                  );
                 }
+
+                console.log("Deposit response:", responseText);
 
                 alert("Deposit request submitted successfully.");
 
               } catch (error) {
 
                 console.error("Deposit error:", error);
-                alert("Deposit request failed.");
+
+                alert(
+                  "Deposit request failed.\\n" +
+                  error.message
+                );
 
               }
 
@@ -96,3 +109,4 @@ function Deposit() {
 }
 
 module.exports = Deposit;
+
