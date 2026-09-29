@@ -60,12 +60,32 @@ function Balance() {
                   );
                 }
 
-                alert("Balance Response: " + responseText);
+                const data = JSON.parse(responseText);
+
+                if (!data || data.length === 0) {
+                  alert("No account information found.");
+                  return;
+                }
+
+                const account = data[0];
+
+                alert(
+                  "Account: " +
+                  account.AccountNumber +
+                  "\\nBalance: ₹" +
+                  Number(account.Balance).toFixed(2) +
+                  "\\nCurrency: " +
+                  account.Currency
+                );
 
               } catch (error) {
 
                 console.error("Balance error:", error);
-                alert("Balance request failed: " + error.message);
+
+                alert(
+                  "Balance request failed.\\n" +
+                  error.message
+                );
 
               }
 
