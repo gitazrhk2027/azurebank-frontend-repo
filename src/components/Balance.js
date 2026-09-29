@@ -2,28 +2,6 @@
 const React = require("react");
 
 function Balance() {
-  const checkBalance = async () => {
-    try {
-      const response = await fetch("/api/balance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          accountNumber: "10001"
-        })
-      });
-
-      const data = await response.text();
-
-      alert("Response: " + data);
-
-    } catch (error) {
-      console.error(error);
-      alert("Error: " + error.message);
-    }
-  };
-
   return React.createElement(
     "div",
     { className: "card" },
@@ -50,9 +28,51 @@ function Balance() {
       "button",
       {
         type: "button",
-        onClick: checkBalance
+        id: "balanceButton"
       },
       "Check Balance"
+    ),
+
+    React.createElement(
+      "script",
+      {
+        dangerouslySetInnerHTML: {
+          __html: `
+            document.getElementById("balanceButton").addEventListener("click", async function () {
+
+              try {
+
+                const response = await fetch("/api/balance", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    accountNumber: "10001"
+                  })
+                });
+
+                const responseText = await response.text();
+
+                if (!response.ok) {
+                  throw new Error(
+                    "Balance request failed: HTTP " + response.status
+                  );
+                }
+
+                alert("Balance Response: " + responseText);
+
+              } catch (error) {
+
+                console.error("Balance error:", error);
+                alert("Balance request failed: " + error.message);
+
+              }
+
+            });
+          `
+        }
+      }
     )
   );
 }
