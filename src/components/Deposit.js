@@ -1,5 +1,6 @@
+
 const React = require("react");
-const { depositMoney } = require("../api");
+const { depositMoney } = require("../../api");
 
 function Deposit() {
   return React.createElement(
