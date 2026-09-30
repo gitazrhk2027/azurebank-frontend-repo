@@ -36,7 +36,7 @@ function App() {
         body {
           margin: 0;
           font-family: Arial, sans-serif;
-          background: red;
+          background: white;
           color: #172033;
         }
 
