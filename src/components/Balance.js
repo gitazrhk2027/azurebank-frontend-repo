@@ -1,5 +1,5 @@
-
 const React = require("react");
+const { getBalance } = require("../api");
 
 function Balance() {
   return React.createElement(
@@ -42,25 +42,7 @@ function Balance() {
 
               try {
 
-                const response = await fetch("/api/balance", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    accountNumber: "10001"
-                  })
-                });
-
-                const responseText = await response.text();
-
-                if (!response.ok) {
-                  throw new Error(
-                    "Balance request failed: HTTP " + response.status
-                  );
-                }
-
-                const data = JSON.parse(responseText);
+                const data = await getBalance("10001");
 
                 if (!data || data.length === 0) {
                   alert("No account information found.");
@@ -98,4 +80,3 @@ function Balance() {
 }
 
 module.exports = Balance;
-

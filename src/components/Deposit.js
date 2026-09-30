@@ -1,5 +1,5 @@
-
 const React = require("react");
+const { depositMoney } = require("../api");
 
 function Deposit() {
   return React.createElement(
@@ -69,21 +69,7 @@ function Deposit() {
 
               try {
 
-                const response = await fetch("/api/deposit", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify(transaction)
-                });
-
-                const responseText = await response.text();
-
-                if (!response.ok) {
-                  throw new Error(
-                    "Deposit request failed: HTTP " + response.status
-                  );
-                }
+                const responseText = await depositMoney(transaction);
 
                 console.log("Deposit response:", responseText);
 
@@ -109,4 +95,3 @@ function Deposit() {
 }
 
 module.exports = Deposit;
-

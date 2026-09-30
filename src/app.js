@@ -1,10 +1,9 @@
+
 const React = require("react");
 
 const Header = require("./components/Header");
 const Balance = require("./components/Balance");
 const Deposit = require("./components/Deposit");
-const Withdraw = require("./components/Withdraw");
-const Transfer = require("./components/Transfer");
 
 function App() {
   return React.createElement(
@@ -37,7 +36,7 @@ function App() {
         body {
           margin: 0;
           font-family: Arial, sans-serif;
-          background: #f4f7fb;
+          background: red;
           color: #172033;
         }
 
@@ -115,7 +114,7 @@ function App() {
         .footer {
           text-align: center;
           margin-top: 45px;
-          color: #667085;
+          color: white;
           font-size: 13px;
         }
         `
@@ -154,9 +153,7 @@ function App() {
           { className: "operations" },
 
           React.createElement(Balance),
-          React.createElement(Deposit),
-          React.createElement(Withdraw),
-          React.createElement(Transfer)
+          React.createElement(Deposit)
         ),
 
         React.createElement(
@@ -170,3 +167,4 @@ function App() {
 }
 
 module.exports = App;
+
