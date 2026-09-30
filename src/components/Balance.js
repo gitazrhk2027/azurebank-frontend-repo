@@ -1,6 +1,5 @@
-
 const React = require("react");
-const { getBalance } = require("../../api");
+const { getBalance } = require("../../services/api");
 
 function Balance() {
   return React.createElement(
